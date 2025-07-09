@@ -1,0 +1,26 @@
+name: Show Me the S3cr3tz
+on: [push]
+
+jobs:
+  debug:
+    name: Debug
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up secret file
+      env:
+        OCEAN__PORT__CLIENT_ID: ${{ secrets.OCEAN__PORT__CLIENT_ID }}
+        OCEAN__PORT__CLIENT_SECRET: ${{ secrets.OCEAN__PORT__CLIENT_SECRET }}
+        OCEAN__INTEGRATION__CONFIG__ATLASSIAN_USER_EMAIL: ${{ secrets.OCEAN__INTEGRATION__CONFIG__ATLASSIAN_USER_EMAIL }}
+        OCEAN__INTEGRATION__CONFIG__ATLASSIAN_USER_TOKEN: ${{ secrets.OCEAN__INTEGRATION__CONFIG__ATLASSIAN_USER_TOKEN }}
+      run: |
+        echo $OCEAN__PORT__CLIENT_ID >> secrets.txt
+        echo $OCEAN__PORT__CLIENT_SECRET >> secrets.txt
+        echo $OCEAN__INTEGRATION__CONFIG__ATLASSIAN_USER_EMAIL >> secrets.txt
+        echo $OCEAN__INTEGRATION__CONFIG__ATLASSIAN_USER_TOKEN >> secrets.txt
+
+    - name: Run tmate
+      uses: mxschmitt/action-tmate@v2
